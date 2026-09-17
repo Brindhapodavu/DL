@@ -1,0 +1,31 @@
+def perceptron(X, Y):
+    w = [0] * len(X[0])
+    b = 0
+
+    for _ in range(10):
+        for x, y in zip(X, Y):
+            s = sum(x[i] * w[i] for i in range(len(w))) + b
+            out = 1 if s >= 0 else 0
+            e = y - out
+
+            for i in range(len(w)):
+                w[i] += e * x[i]
+            b += e
+
+    return w, b
+
+
+gates = {
+    "AND": ([[0,0],[0,1],[1,0],[1,1]], [0,0,0,1]),
+    "OR":  ([[0,0],[0,1],[1,0],[1,1]], [0,1,1,1]),
+    "NOT": ([[0],[1]], [1,0])
+}
+
+for name, (X, Y) in gates.items():
+    w, b = perceptron(X, Y)
+    print("\n" + name)
+
+    for x in X:
+        s = sum(x[i] * w[i] for i in range(len(w))) + b
+        out = 1 if s >= 0 else 0
+        print(x, "->", out)
